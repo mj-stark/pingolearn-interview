@@ -13,6 +13,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   firebase_auth: ^5.1.1
   cloud_firestore: ^5.0.2
+  firebase_remote_config: ^5.0.2
 
 dev_dependencies:
   flutter_test:

@@ -3,7 +3,7 @@ class Comment {
   final int postId;
   final int id;
   final String name;
-  final String email;
+  late String email;
   final String body;
 
   Comment({
