@@ -7,7 +7,7 @@ import 'package:flutter_application_2/ui/HomePage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -18,6 +18,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _passwordController = TextEditingController();
   final AuthService _authService = AuthService();
 
+  // Form key for managing form state
+  final _formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,161 +29,150 @@ class _LoginPageState extends State<LoginPage> {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                SizedBox(height: MediaQuery.of(context).size.height * 0.05),
-                Text(
-                  'Comments',
-                  style: GoogleFonts.poppins(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue,
+            child: Form(
+              key: _formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+                  Text(
+                    'Comments',
+                    style: GoogleFonts.poppins(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blue,
+                    ),
+                    textAlign: TextAlign.start,
                   ),
-                  textAlign: TextAlign.start,
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.25),
-                Container(
-                  height: 50.h,
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Background color of the container
-                    borderRadius:
-                        BorderRadius.circular(10.0), // Rounded corners
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 6.0,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: TextField(
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.25),
+                  TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
-                        borderSide: BorderSide.none, // No border
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Rounded corners for the border
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                       labelText: 'Email',
                     ),
                     keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your email';
+                      }
+                      if (!isValidEmail(value)) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
                   ),
-                ),
-                SizedBox(height: 20.h),
-                Container(
-                  height: 50.h,
-                  padding: EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                    color: Colors.white, // Background color of the container
-                    borderRadius:
-                        BorderRadius.circular(10.0), // Rounded corners
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black12,
-                        blurRadius: 6.0,
-                        offset: Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: TextField(
+                  SizedBox(height: 20.h),
+                  TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: 'Password',
                       border: OutlineInputBorder(
-                        borderSide: BorderSide.none, // No border
-                        borderRadius: BorderRadius.circular(
-                            10.0), // Rounded corners for the border
+                        borderSide: BorderSide.none,
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
                     ),
                     obscureText: true,
-                  ),
-                ),
-                SizedBox(height: MediaQuery.of(context).size.height * 0.33),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      final String email = _emailController.text;
-                      final String password = _passwordController.text;
-
-                      User? user = await _authService
-                          .signInWithEmailAndPassword(email, password);
-
-                      if (user != null) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Login successful!')),
-                        );
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Homepage()),
-                        );
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  'Login failed. Please check your credentials.')),
-                        );
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your password';
                       }
+                      return null;
                     },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white,
-                      padding: EdgeInsets.symmetric(vertical: 15),
-                      textStyle: TextStyle(fontSize: 15.sp),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
-                            10), // Adjust radius as needed
+                  ),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.33),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        // Validate the form
+                        if (_formKey.currentState!.validate()) {
+                          // If valid, retrieve input values
+                          final String email = _emailController.text;
+                          final String password = _passwordController.text;
+
+                          // Call AuthService to sign in the user
+                          User? user = await _authService.signInWithEmailAndPassword(email, password);
+
+                          if (user != null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Login successful!')),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => Homepage()),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Login failed. Please check your credentials.')),
+                            );
+                          }
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                        foregroundColor: Colors.white,
+                        padding: EdgeInsets.symmetric(vertical: 15),
+                        textStyle: TextStyle(fontSize: 15.sp),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
                       ),
-                    ),
-                    child: Text(
-                      'Login',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                      child: Text(
+                        'Login',
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(height: 20.h),
-                Center(
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'New Here? ',
-                      style: GoogleFonts.poppins(
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
-                      ),
-                      children: [
-                        WidgetSpan(
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
+                  SizedBox(height: 20.h),
+                  Center(
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'New Here? ',
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
+                        children: [
+                          WidgetSpan(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
                                   context,
-                                  MaterialPageRoute(
-                                      builder: (context) => SignupPage()));
-                            },
-                            child: Text(
-                              'Sign up',
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.purple,
+                                  MaterialPageRoute(builder: (context) => SignupPage()),
+                                );
+                              },
+                              child: Text(
+                                'Sign up',
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.purple,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  bool isValidEmail(String email) {
+    return RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(email);
   }
 }
