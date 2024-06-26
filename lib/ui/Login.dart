@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Form(
               key: _formKey,
               child: Column(
@@ -87,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.33),
                   SizedBox(
                     width: double.infinity,
-                    height: 50,
+                    height: 50.h,
                     child: ElevatedButton(
                       onPressed: () async {
                         // Validate the form
@@ -101,15 +101,15 @@ class _LoginPageState extends State<LoginPage> {
 
                           if (user != null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Login successful!')),
+                              const SnackBar(content: const Text('Login successful!')),
                             );
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) => Homepage()),
+                              MaterialPageRoute(builder: (context) => const Homepage()),
                             );
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Login failed. Please check your credentials.')),
+                              const SnackBar(content: Text('Login failed. Please check your credentials.')),
                             );
                           }
                         }
@@ -117,10 +117,10 @@ class _LoginPageState extends State<LoginPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                         foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 15),
+                        padding: const EdgeInsets.symmetric(vertical: 15),
                         textStyle: TextStyle(fontSize: 15.sp),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(10.r),
                         ),
                       ),
                       child: Text(
@@ -147,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                               onTap: () {
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => SignupPage()),
+                                  MaterialPageRoute(builder: (context) => const SignupPage()),
                                 );
                               },
                               child: Text(
