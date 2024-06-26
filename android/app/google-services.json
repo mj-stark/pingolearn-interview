@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "905821069699",
+    "project_id": "st-john-s-2ca4e",
+    "storage_bucket": "st-john-s-2ca4e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905821069699:android:13c1a22daf6f8eb6f0d6b6",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDp73Ut6sxBZseywtmfrENGEHqJ_n_Q4Ho"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
