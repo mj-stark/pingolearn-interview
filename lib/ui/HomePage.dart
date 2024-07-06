@@ -40,14 +40,17 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comments',style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.white,
-                              ),),
+        title: Text(
+          'Comments',
+          style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w500,
+            color: Colors.white,
+          ),
+        ),
         backgroundColor: Colors.blue,
       ),
       body: isLoading
-          ? Center(child: CircularProgressIndicator())
+          ? const Center(child: CircularProgressIndicator())
           : Padding(
               padding: const EdgeInsets.all(10.0),
               child: ListView.builder(
@@ -55,6 +58,7 @@ class _HomepageState extends State<Homepage> {
                 itemBuilder: (context, index) {
                   final comment = comments[index];
                   return Card(
+                    color: Colors.lightBlueAccent,
                     margin: const EdgeInsets.symmetric(vertical: 10.0),
                     child: Padding(
                       padding: const EdgeInsets.all(10.0),
@@ -73,28 +77,22 @@ class _HomepageState extends State<Homepage> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text(
-                                  'Name: ${comment.name}',
-                                  style: GoogleFonts.poppins(
-                                fontSize: 16.sp,
-                                    fontWeight: FontWeight.bold,
-                              )
-                                ),
+                                Text('Name: ${comment.name}',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 16.sp,
+                                      fontWeight: FontWeight.bold,
+                                    )),
                                 SizedBox(height: 5.h),
-                                Text(
-                                  'Email: ${comment.email}',
-                                  style: GoogleFonts.poppins(
-                                fontSize: 14.sp,
-                                    color: Colors.grey[600],
-                              )
-                                ),
+                                Text('Email: ${comment.email}',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14.sp,
+                                      color: Colors.grey[600],
+                                    )),
                                 SizedBox(height: 10.h),
-                                Text(
-                                  comment.body,
-                                  style: GoogleFonts.poppins(
-                               fontSize: 14.sp,
-                              )
-                                ),
+                                Text(comment.body,
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 14.sp,
+                                    )),
                               ],
                             ),
                           ),

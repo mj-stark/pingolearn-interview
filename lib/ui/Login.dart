@@ -7,7 +7,7 @@ import 'package:flutter_application_2/ui/HomePage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -49,11 +49,14 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     controller: _emailController,
                     decoration: InputDecoration(
+                      filled: true,            // Enable the fill color
+                      fillColor: Colors.white,
+                      hintText: 'Email',
+                      floatingLabelBehavior: FloatingLabelBehavior.never,
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
-                      labelText: 'Email',
                     ),
                     keyboardType: TextInputType.emailAddress,
                     validator: (value) {
@@ -70,11 +73,16 @@ class _LoginPageState extends State<LoginPage> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+
+                      alignLabelWithHint: true,
+                      filled: true,
+                      hintText: 'Password',
+                      fillColor: Colors.white,  // Set the fill color to white
                       border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10.0),
                       ),
+                      floatingLabelBehavior: FloatingLabelBehavior.never
                     ),
                     obscureText: true,
                     validator: (value) {
@@ -87,21 +95,19 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.33),
                   SizedBox(
                     width: double.infinity,
-                    height: 50.h,
+                    height: 53.h,
                     child: ElevatedButton(
                       onPressed: () async {
-                        // Validate the form
                         if (_formKey.currentState!.validate()) {
-                          // If valid, retrieve input values
+
                           final String email = _emailController.text;
                           final String password = _passwordController.text;
 
-                          // Call AuthService to sign in the user
                           User? user = await _authService.signInWithEmailAndPassword(email, password);
 
                           if (user != null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: const Text('Login successful!')),
+                              const SnackBar(content: Text('Login successful!')),
                             );
                             Navigator.push(
                               context,

@@ -6,7 +6,7 @@ import 'package:flutter_application_2/ui/signup.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-      options: FirebaseOptions(
+      options: const FirebaseOptions(
     apiKey: 'AIzaSyDp73Ut6sxBZseywtmfrENGEHqJ_n_Q4Ho',
     appId: '1:905821069699:android:13c1a22daf6f8eb6f0d6b6',
     messagingSenderId: '905821069699',
@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
       designSize: const Size(412, 868),
       minTextAdapt: true,
       splitScreenMode: true,
-      builder: (context, _) => MaterialApp(
+      builder: (context, _) => const MaterialApp(
         title: 'My App',
         home: SignupPage(),
       ),

@@ -21,7 +21,6 @@ class ApiService {
           comment.email = _maskEmail(comment.email);
         }
       }
-
       return comments;
     } else {
       throw Exception('Failed to load comments');
@@ -36,7 +35,7 @@ class ApiService {
       // Get boolean value from remote config
       return FirebaseRemoteConfig.instance.getBool('mask_email');
     } catch (e) {
-      print('Error fetching Remote Config: $e');
+      
       return false; // Default to false if there's an error
     }
   }
